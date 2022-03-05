@@ -2,8 +2,12 @@ package com.example.ep.myapplication.Activitys.Services;
 
 import android.os.NetworkOnMainThreadException;
 import android.os.StrictMode;
-import android.util.Log;
-import android.widget.Toast;
+
+import com.example.ep.myapplication.Activitys.Model.State;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,17 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.example.ep.myapplication.Activitys.Activitys.MainActivity;
-import com.example.ep.myapplication.Activitys.Model.State;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 /**
  * Created by EP on 18/07/2017.
@@ -81,7 +74,7 @@ private  ArrayList<State> arrState = new ArrayList<>();
     public ArrayList<State> getArrState()
     {
 
-        String sURL = "https://restcountries.com/v3.1/all?fields=name;nativeName;borders;flag"; // get all states
+        String sURL = "https://restcountries.com/v3.1/all?fields=name,nativeName,borders,flag"; // get all states
 
         // Connect to the URL using java's native library
         URL url = null;
@@ -108,24 +101,24 @@ private  ArrayList<State> arrState = new ArrayList<>();
             for (JsonElement je : rootobj) {
                 JsonObject obj = je.getAsJsonObject(); //since you know it's a JsonObject
                 JsonElement entriesname = obj.get("name");//will return members of your object
-                JsonElement entriesnative = obj.get("nativeName");
+                //JsonElement entriesnative = obj.get("nativeName");
                 JsonElement entriesborders = obj.get("borders");
                 JsonElement entriesflag = obj.get("flag");
 
-                String name = entriesname.toString().replace("\"","");
-                String nativen = entriesnative.toString().replace("\"","");
-                String flag = entriesflag.toString().replace("\"","");
+                String name = entriesname.toString();//.replace("\"","");
+                //String nativen = entriesnative.toString();//.replace("\"","");
+                String flag = entriesflag.toString();//.replace("\"","");
 
                 ArrayList<String> arrBorders = new ArrayList<String>();
                 JsonArray entriesbordersArray = entriesborders.getAsJsonArray();
 
                 for(JsonElement j : entriesbordersArray){
 
-                    String s = j.toString().replace("\"","");
+                    String s = j.toString();//.replace("\"","");
                     arrBorders.add(s);
                 }
 
-                arrState.add(new State(name, arrBorders,nativen,flag));
+                arrState.add(new State(name, arrBorders,"",flag));
 
             }
         } catch (IOException e) {
