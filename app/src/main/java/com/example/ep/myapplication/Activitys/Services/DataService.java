@@ -97,7 +97,6 @@ private  ArrayList<State> arrState = new ArrayList<>();
 
             JsonArray rootobj = root.getAsJsonArray(); //May be an array, may be an object.
 
-
             for (JsonElement je : rootobj) {
                 JsonObject obj = je.getAsJsonObject(); //since you know it's a JsonObject
                 JsonElement entriesname = obj.get("name");//will return members of your object
@@ -105,8 +104,8 @@ private  ArrayList<State> arrState = new ArrayList<>();
                 JsonElement entriesborders = obj.get("borders");
                 JsonElement entriesflag = obj.get("flag");
 
-                String name = entriesname.toString();//.replace("\"","");
-                //String nativen = entriesnative.toString();//.replace("\"","");
+                String name = entriesname.getAsJsonObject().get("common").toString();//.replace("\"","");
+                //String nativen = entriesname.getAsJsonObject().get("nativeName").getAsJsonObject().get("cnr").getAsJsonObject().get("common").toString();//.replace("\"","");
                 String flag = entriesflag.toString();//.replace("\"","");
 
                 ArrayList<String> arrBorders = new ArrayList<String>();
@@ -118,7 +117,7 @@ private  ArrayList<State> arrState = new ArrayList<>();
                     arrBorders.add(s);
                 }
 
-                arrState.add(new State(name, arrBorders,"",flag));
+                arrState.add(new State(name, arrBorders,name+" - native",flag));
 
             }
         } catch (IOException e) {
